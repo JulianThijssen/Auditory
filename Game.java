@@ -1,4 +1,5 @@
 package com.auditory;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -8,6 +9,7 @@ import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.util.WaveData;
+import com.auditory.util.Vector3;
 
 import java.nio.IntBuffer;
 import java.nio.FloatBuffer;
@@ -15,16 +17,20 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-
 public class Game {
+	public static final float SPEED = 0.1f;
+	public Vector3 position = new Vector3(0, 0, 0);
+	public Vector3 velocity = new Vector3(0, 0, 0);
+	public float rotation = 0;
+	
 	//Audio
 	IntBuffer buffer = BufferUtils.createIntBuffer(1);
 	IntBuffer source = BufferUtils.createIntBuffer(1);
 	
 	FloatBuffer sourcePos = (FloatBuffer)BufferUtils.createFloatBuffer(3).put(new float[] {0.0f, 0.0f, 0.0f}).rewind();
 	FloatBuffer sourceVel = (FloatBuffer)BufferUtils.createFloatBuffer(3).put(new float[] {0.0f, 0.0f, 0.0f}).rewind();
-	FloatBuffer listenerPos = (FloatBuffer)BufferUtils.createFloatBuffer(3).put(new float[] {0.0f, 0.0f, 0.0f}).rewind();
-	FloatBuffer listenerVel = (FloatBuffer)BufferUtils.createFloatBuffer(3).put(new float[] {1.0f, 0.0f, 0.0f}).rewind();
+	FloatBuffer listenerPos = (FloatBuffer)BufferUtils.createFloatBuffer(3).put(new float[] {position.x, position.y, position.z}).flip();
+	FloatBuffer listenerVel = (FloatBuffer)BufferUtils.createFloatBuffer(3).put(new float[] {velocity.x, velocity.y, velocity.z}).flip();
 	FloatBuffer listenerOri = (FloatBuffer)BufferUtils.createFloatBuffer(6).put(new float[] {0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f}).rewind();
 	
 	public Game() {
@@ -105,27 +111,43 @@ public class Game {
 			
 			//Graphics
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-			
 			GL11.glColor3f(0.5f, 0.5f, 0.5f);
 			
+			//Input
 			while(Keyboard.next()) {
 				if(Keyboard.getEventKeyState()) {
+					if(Keyboard.getEventKey() == Keyboard.KEY_W) {
+						velocity.z = -SPEED;
+					}
+					if(Keyboard.getEventKey() == Keyboard.KEY_S) {
+						velocity.z = SPEED;
+					}
 					if(Keyboard.getEventKey() == Keyboard.KEY_D) {
-						GL11.glBegin(GL11.GL_QUADS);
-							GL11.glVertex2f(100, 100);
-							GL11.glVertex2f(100+200, 100);
-							GL11.glVertex2f(100+200, 100+200);
-							GL11.glVertex2f(100, 100+200);
-						GL11.glEnd();
-						System.out.println("BEEP");
-						listenerPos.put(0, listenerPos.get(0) + listenerVel.get(0));
-						listenerPos.put(1, listenerPos.get(1) + listenerVel.get(1));
-						listenerPos.put(2, listenerPos.get(2) + listenerVel.get(2));
-						
-						AL10.alListener(AL10.AL_POSITION, listenerPos);
+						velocity.x = SPEED;
+					}
+					if(Keyboard.getEventKey() == Keyboard.KEY_A) {
+						velocity.x = -SPEED;
+					}
+					if(Keyboard.getEventKey() == Keyboard.KEY_R) {
+						rotation = 15;
+						float x = listenerOri.get(0);
+						float z = listenerOri.get(2);
+						float newx = (float) (x * Math.cos(rotation) - z * Math.sin(rotation));
+						float newz = (float) (x * Math.sin(rotation) + z * Math.cos(rotation));
+						listenerOri.put(0, newx);
+						listenerOri.put(2, newz);
 					}
 				}
 			}
+			
+			position.add(velocity);
+			
+			listenerPos.put(0, position.x);
+			listenerPos.put(1, position.y);
+			listenerPos.put(2, position.z);
+			
+			AL10.alListener(AL10.AL_POSITION, listenerPos);
+			AL10.alListener(AL10.AL_ORIENTATION, listenerOri);
 		}
 		close();
 	}
