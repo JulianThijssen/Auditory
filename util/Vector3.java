@@ -14,4 +14,11 @@ public class Vector3 {
 		y += v.y;
 		z += v.z;
 	}
+	
+	public boolean isZero() {
+		if(x == 0 && y == 0 && z == 0) {
+			return true;
+		}
+		return false;
+	}
 }
