@@ -6,7 +6,8 @@ import com.auditory.Entity;
 
 public class Player extends Entity {
 	public static final float HEIGHT = 0.1f;
-	public static final float SPEED = 0.1f;
+	public static final float MAX_SPEED = 0.3f;
+	public static final float ACCELERATION = 0.05f;
 	
 	private boolean forward, backward, left, right;
 	
@@ -37,19 +38,27 @@ public class Player extends Entity {
 			}
 		}
 		
-		if(forward)  {velocity.z = -SPEED;}
-		if(backward) {velocity.z = SPEED;}
-		if(left)     {velocity.x = -SPEED;}
-		if(right)    {velocity.x = SPEED;}
+		if(forward)  {velocity.z -= ACCELERATION;}
+		if(backward) {velocity.z += ACCELERATION;}
+		if(left)     {velocity.x -= ACCELERATION;}
+		if(right)    {velocity.x += ACCELERATION;}
 		if(!forward && !backward) {velocity.z = 0;}
 		if(!left && !right) {velocity.x = 0;}
 		
+		if(velocity.length() > MAX_SPEED) {
+			velocity.normalise();
+			velocity.scale(MAX_SPEED);
+		}
+		
 		if(!velocity.isZero()) {
 			if(!sources.get(0).isPlaying()) {
-				sources.get(0).setPitch((float) (Math.random() + 0.5f));
+				sources.get(0).setPitch(velocity.length() + 0.8f);
+				sources.get(0).setGain(velocity.length() + 0.5f);
 				sources.get(0).playAudio(false);
 			}
 		}
+		
+		System.out.println(velocity.length());
 		
 		position.add(velocity);
 		

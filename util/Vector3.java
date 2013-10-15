@@ -21,4 +21,21 @@ public class Vector3 {
 		}
 		return false;
 	}
+	
+	public float length() {
+		return (float) Math.sqrt(x * x + y * y + z * z);
+	}
+	
+	public void normalise() {
+		float length = length();
+		x = x / length;
+		y = y / length;
+		z = z / length;
+	}
+	
+	public void scale(float factor) {
+		x *= factor;
+		y *= factor;
+		z *= factor;
+	}
 }

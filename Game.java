@@ -36,8 +36,8 @@ public class Game {
 		GL11.glOrtho(0, 512, 0, 512, 1, -1);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		
-		block.addAudioSource(new AudioSource(block, "civilian_mono.wav"));
-		block.getAudioSource(0).playAudio(false);
+		//block.addAudioSource(new AudioSource(block, "civilian_mono.wav"));
+		//block.getAudioSource(0).playAudio(false);
 		player.addAudioListener(new AudioListener(player));
 		player.addAudioSource(new AudioSource(player, "footstep_wood1.wav"));
 		
