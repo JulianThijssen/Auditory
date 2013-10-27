@@ -52,8 +52,7 @@ public class Game {
 		player.addAudioListener(new AudioListener(player));
 		player.addAudioSource(new AudioSource(player, "footstep_wood1.wav"));
 		try {
-			model = OBJLoader.load("res/Cube.obj");
-			model.printModel();
+			model = OBJLoader.load("res/armadillo.obj");
 		} catch(FileNotFoundException fe) {
 			Log.debug("The file was not found");
 		} catch(IOException ie) {
@@ -79,6 +78,8 @@ public class Game {
 		}
 		GL11.glEnd();
 		GL11.glEndList();
+		
+		Mouse.setGrabbed(true);
 		
 		update();
 	}

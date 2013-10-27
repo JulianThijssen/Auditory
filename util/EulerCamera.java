@@ -43,7 +43,7 @@ import static org.lwjgl.opengl.GL11.*;
  *
  * @author Oskar Veerhoek
  */
-public final class EulerCamera implements Camera {
+public final class EulerCamera {
 
     private float x = 0;
     private float y = 0;
@@ -542,7 +542,6 @@ public final class EulerCamera implements Camera {
         this.fov = fov;
     }
 
-    @Override
     public void setAspectRatio(float aspectRatio) {
         if (aspectRatio <= 0) {
             throw new IllegalArgumentException("aspectRatio " + aspectRatio + " is 0 or less");

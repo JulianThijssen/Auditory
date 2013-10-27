@@ -13,6 +13,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
 public class Camera {
+	public static final float MIN_PITCH = -90;
+	public static final float MAX_PITCH = 90;
+	
 	public Vector3 position = new Vector3(0, 0, 0);
 	public Vector3 rotation = new Vector3(0, 0, 0); //Pitch Yaw Roll
 	private int     fieldOfView = 90;
@@ -22,13 +25,13 @@ public class Camera {
 	
 	public void processMouse(float mouseSpeed) {
 		float dx = Mouse.getDX();
-		float dy = Mouse.getDY();
+		float dy = -Mouse.getDY();
 		
 		//Pitch
-		if(rotation.x + dy > 360) {
-			rotation.x = rotation.x + dy - 360;
-		} else if(rotation.x + dy < 0) {
-			rotation.x = 360 - rotation.x + dy;
+		if(rotation.x + dy > MAX_PITCH) {
+			rotation.x = MAX_PITCH;
+		} else if(rotation.x + dy < MIN_PITCH) {
+			rotation.x = MIN_PITCH;
 		} else {
 			rotation.x += dy;
 		}
@@ -56,6 +59,8 @@ public class Camera {
 			position.x += 1;
 		}
 	}
+	
+	public void 
 	
 	public void applyPerspectiveMatrix() {
         glPushAttrib(GL_TRANSFORM_BIT);
