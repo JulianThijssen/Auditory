@@ -58,8 +58,6 @@ public class Player extends Entity {
 			}
 		}
 		
-		System.out.println(velocity.length());
-		
 		position.add(velocity);
 		
 		sources.get(0).setPosition(position.x, position.y - HEIGHT, position.z);

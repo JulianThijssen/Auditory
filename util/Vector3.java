@@ -38,4 +38,9 @@ public class Vector3 {
 		y *= factor;
 		z *= factor;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("(%s, %s, %s)", x, y, z);
+	}
 }
