@@ -8,7 +8,7 @@ import org.lwjgl.openal.AL10;
 import org.lwjgl.util.WaveData;
 
 import com.auditory.Entity;
-import com.auditory.util.ResourceLoader;
+import com.auditory.util.AudioLoader;
 
 public class AudioSource {
 	public static final float DEFAULT_GAIN = 1f;
@@ -62,7 +62,7 @@ public class AudioSource {
 	public void loadAudio(String name) {
 		AL10.alGenBuffers(audio);
 		
-		WaveData wav = ResourceLoader.getWave(name);
+		WaveData wav = AudioLoader.getWave(name);
 		if(wav == null) {
 			System.out.println("Failed to load: " + name);
 			return;

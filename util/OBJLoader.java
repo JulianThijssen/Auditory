@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import com.auditory.geom.Face;
 import com.auditory.geom.Model;
+import com.auditory.geom.Vector3;
 
 public class OBJLoader {
 	/**

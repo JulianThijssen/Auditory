@@ -3,6 +3,7 @@ package com.auditory.entities;
 import org.lwjgl.input.Keyboard;
 
 import com.auditory.Entity;
+import com.auditory.geom.Vector3;
 
 public class Player extends Entity {
 	public static final float HEIGHT = 0.1f;
@@ -12,7 +13,7 @@ public class Player extends Entity {
 	private boolean forward, backward, left, right;
 	
 	public Player(float x, float y, float z) {
-		super(x, y, z);
+		super(new Vector3(x, y, z));
 	}
 	
 	public void update() {

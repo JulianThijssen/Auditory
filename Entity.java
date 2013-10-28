@@ -5,19 +5,17 @@ import java.util.List;
 
 import com.auditory.audio.AudioListener;
 import com.auditory.audio.AudioSource;
-import com.auditory.util.Vector3;
+import com.auditory.geom.Vector3;
 
-public abstract class Entity {
-	public Vector3 position = new Vector3(0, 0, 0);
+public abstract class Entity extends GameObject {
 	public Vector3 velocity = new Vector3(0, 0, 0);
-	public Vector3 forward = new Vector3(0, 0, -1);
 	
 	//Audio
 	protected AudioListener listener;
 	protected List<AudioSource> sources = new ArrayList<AudioSource>();
 	
-	public Entity(float x, float y, float z) {
-		position = new Vector3(x, y, z);
+	public Entity(Vector3 position) {
+		super(position);
 	}
 	
 	public void addAudioListener(AudioListener listener) {
