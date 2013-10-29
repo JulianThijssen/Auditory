@@ -5,9 +5,10 @@ import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL10;
 
+import com.auditory.Component;
 import com.auditory.Entity;
 
-public class AudioListener {
+public class AudioListener extends Component {
 	private FloatBuffer position = (FloatBuffer) BufferUtils.createFloatBuffer(3).clear();
 	private FloatBuffer velocity = (FloatBuffer) BufferUtils.createFloatBuffer(3).clear();
 	private FloatBuffer orientation = (FloatBuffer) BufferUtils.createFloatBuffer(6).clear();
