@@ -1,72 +1,38 @@
 package com.auditory;
 
-import static org.lwjgl.opengl.GL11.GL_PROJECTION;
-import static org.lwjgl.opengl.GL11.GL_TRANSFORM_BIT;
-import static org.lwjgl.opengl.GL11.glLoadIdentity;
-import static org.lwjgl.opengl.GL11.glMatrixMode;
-import static org.lwjgl.opengl.GL11.glPopAttrib;
-import static org.lwjgl.opengl.GL11.glPushAttrib;
+import static org.lwjgl.opengl.GL11.*;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
-import com.auditory.geom.Vector3;
+public class Camera extends Component {
+	public static final float   DEFAULT_FOV = 90;
+	public static final float   DEFAULT_ASPECTRATIO = 1;
+	public static final float   DEFAULT_ZNEAR = 0.3f;
+	public static final float   DEFAULT_ZFAR = 100f;
+	public static final boolean DEFAULT_PERSPECTIVE = true;
+	
 
-public class Camera {
-	public static final float MIN_PITCH = -90;
-	public static final float MAX_PITCH = 90;
+	private float   fieldOfView = DEFAULT_FOV;
+	private float   aspectRatio = DEFAULT_ASPECTRATIO;
+	private float   zNear       = DEFAULT_ZNEAR;
+	private float   zFar        = DEFAULT_ZFAR;
+	private boolean perspective = DEFAULT_PERSPECTIVE;
 	
-	public Vector3 position = new Vector3(0, 0, 0);
-	public Vector3 rotation = new Vector3(0, 0, 0); //Pitch Yaw Roll
-	private int     fieldOfView = 90;
-	private float   aspectRatio = 1;
-	private float   zNear = 0.1f;
-	private float   zFar = 100f;
+	public Camera(GameObject parent) {
+		super(parent);
+		enablePerspective(DEFAULT_PERSPECTIVE);
+	}
 	
-	public void processMouse(float mouseSpeed) {
-		float dx = Mouse.getDX();
-		float dy = -Mouse.getDY();
-		
-		//Pitch
-		if(rotation.x + dy > MAX_PITCH) {
-			rotation.x = MAX_PITCH;
-		} else if(rotation.x + dy < MIN_PITCH) {
-			rotation.x = MIN_PITCH;
+	public void enablePerspective(boolean b) {
+		perspective = b;
+		if(perspective) {
+			applyPerspectiveMatrix();
 		} else {
-			rotation.x += dy;
-		}
-		//Yaw
-		if(rotation.y + dx > 360) {
-			rotation.y = rotation.y + dx - 360;
-		} else if(rotation.y + dx < 0) {
-			rotation.y = 360 - rotation.y + dx;
-		} else {
-			rotation.y += dx;
+			//TODO applyOrthographicMatrix();
 		}
 	}
 	
-	public void processKeyboard() {
-		if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
-			position.z -= 1;
-		}
-		if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
-			position.z += 1;
-		}
-		if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
-			position.x -= 1;
-		}
-		if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
-			position.x += 1;
-		}
-	}
-	
-	public void move() {
-		
-	}
-	
-	public void applyPerspectiveMatrix() {
+	private void applyPerspectiveMatrix() {
         glPushAttrib(GL_TRANSFORM_BIT);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
@@ -75,12 +41,12 @@ public class Camera {
     }
 	
 	public void applyTransformMatrix() {
-		GL11.glPushAttrib(GL11.GL_TRANSFORM_BIT);
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glRotatef(rotation.x, 1, 0, 0);
-		GL11.glRotatef(rotation.y, 0, 1, 0);
-		GL11.glRotatef(rotation.z, 0, 0, 1);
-		GL11.glTranslatef(-position.x, -position.y, -position.z);
-		GL11.glPopAttrib();
+		glPushAttrib(GL_TRANSFORM_BIT);
+		glMatrixMode(GL_MODELVIEW);
+		glRotatef(parent.rotation.x, 1, 0, 0);
+		glRotatef(parent.rotation.y, 0, 1, 0);
+		glRotatef(parent.rotation.z, 0, 0, 1);
+		glTranslatef(-parent.position.x, -parent.position.y, -parent.position.z);
+		glPopAttrib();
 	}
 }

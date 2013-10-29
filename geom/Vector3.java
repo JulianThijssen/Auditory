@@ -15,6 +15,14 @@ public class Vector3 {
 		z += v.z;
 	}
 	
+	public static Vector3 add(Vector3 v1, Vector3 v2) {
+		Vector3 v = new Vector3(0, 0, 0);
+		v.x = v1.x + v2.x;
+		v.y = v1.y + v2.y;
+		v.z = v1.z + v2.z;
+		return v;
+	}
+	
 	public boolean isZero() {
 		if(x == 0 && y == 0 && z == 0) {
 			return true;

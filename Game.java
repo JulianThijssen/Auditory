@@ -13,6 +13,8 @@ import org.lwjgl.LWJGLException;
 
 import com.auditory.audio.AudioListener;
 import com.auditory.audio.AudioSource;
+import com.auditory.behaviours.PlayerMovement;
+import com.auditory.components.Mesh;
 import com.auditory.entities.Player;
 import com.auditory.gameobjects.Block;
 import com.auditory.geom.Face;
@@ -22,12 +24,13 @@ import com.auditory.util.Log;
 import com.auditory.util.OBJLoader;
 
 public class Game {
+	
 	public Camera camera;
 	public Model model;
-	public int modelDisplayList;
+	public int cubeList;
 	public Player player = new Player(0, 0, 0);
 	public Block block = new Block(0, 0, 0);
-	public Block block2 = new Block(2, 0, 0);
+	public int shaderProgram;
 	
 	public Game() {
 		init();
@@ -45,25 +48,61 @@ public class Game {
 		}
 		
 		//Audio
-		//block.addAudioSource(new AudioSource(block, "civilian_mono.wav"));
-		//block.getAudioSource(0).playAudio(false);
-		player.addAudioListener(new AudioListener(player));
-		player.addAudioSource(new AudioSource(player, "footstep_wood1.wav"));
+		//player.addComponent(new AudioListener(player));
+		//player.addComponent(new AudioSource(player, "footstep_wood1.wav"));
 		
 		//Graphics
-		camera = new Camera();
-        camera.applyPerspectiveMatrix();
+        player.addComponent(new Camera(player));
+        player.addComponent(new PlayerMovement(player));
 		
+        
+        cubeList = loadModel("res/Fountain.obj");
+		
+		block.addComponent(new Mesh(block, cubeList));
+		
+		//Lock the cursor to the screen
+		Mouse.setGrabbed(true);
+		
+		update();
+	}
+	
+	public void update() {
+		while(!Display.isCloseRequested()) {
+	        if (Mouse.isButtonDown(0)) {
+	            Mouse.setGrabbed(true);
+	        } else if (Mouse.isButtonDown(1)) {
+	            Mouse.setGrabbed(false);
+	        }
+			Display.sync(60);
+			Display.update();
+			
+			//Update entities
+			player.update();
+			
+			//Render
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glColor3f(0.5f, 0.5f, 0.5f);
+			
+			glLoadIdentity();
+	        player.camera.applyTransformMatrix();
+	        
+			block.render();
+		}
+		close();
+	}
+	
+	public int loadModel(String filepath) {
 		try {
-			model = OBJLoader.load("res/Cube.obj");
+			model = OBJLoader.load("res/Fountain.obj");
 		} catch(FileNotFoundException fe) {
 			Log.debug("The file was not found");
 		} catch(IOException ie) {
 			Log.debug("There was a problem while reading from file");
 		}
 		
-		modelDisplayList = glGenLists(1);
-		glNewList(modelDisplayList, GL_COMPILE);
+		int list = glGenLists(1);
+		glNewList(cubeList, GL_COMPILE);
 		glBegin(GL_TRIANGLES);
 		for(Face face: model.faces) {
 			Vector3 v1 = model.vertices.get(face.vertices[0] - 1);
@@ -82,45 +121,11 @@ public class Game {
 		glEnd();
 		glEndList();
 		
-		block.setModel(modelDisplayList);
-		block2.setModel(modelDisplayList);
-		
-		//Lock the cursor to the screen
-		Mouse.setGrabbed(true);
-		
-		update();
-	}
-	
-	public void update() {
-		while(!Display.isCloseRequested()) {
-			camera.processMouse(1);
-	        camera.processKeyboard();
-	        System.out.println(camera.position);
-	        if (Mouse.isButtonDown(0)) {
-	            Mouse.setGrabbed(true);
-	        } else if (Mouse.isButtonDown(1)) {
-	            Mouse.setGrabbed(false);
-	        }
-			Display.sync(60);
-			Display.update();
-			
-			player.update();
-			glLoadIdentity();
-	        camera.applyTransformMatrix();
-	        camera.applyPerspectiveMatrix();
-	        
-			//Render
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			glColor3f(0.5f, 0.5f, 0.5f);
-			block.render();
-			block2.render();
-		}
-		close();
+		return list;
 	}
 	
 	public void close() {
-		glDeleteLists(modelDisplayList, 1);
+		glDeleteLists(cubeList, 1);
 		Display.destroy();
 		AL.destroy();
 	}

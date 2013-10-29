@@ -14,8 +14,8 @@ public class AudioListener extends Component {
 	private FloatBuffer orientation = (FloatBuffer) BufferUtils.createFloatBuffer(6).clear();
 	
 	public AudioListener(Entity parent) {
+		super(parent);
 		setPosition(parent.position.x, parent.position.y, parent.position.z);
-		setVelocity(parent.velocity.x, parent.velocity.y, parent.velocity.z);
 		orientation.put(new float[] {0, 0, -1, 0, 1, 0});
 		orientation.position(0);
 		
@@ -46,6 +46,10 @@ public class AudioListener extends Component {
 		orientation.put(2, z);
 		orientation.position(0);
 		AL10.alListener(AL10.AL_ORIENTATION, orientation);
+	}
+	
+	public void update() {
+		
 	}
 	
 	public void rotate(float radians) {

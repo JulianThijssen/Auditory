@@ -7,10 +7,11 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.util.WaveData;
 
+import com.auditory.Component;
 import com.auditory.Entity;
 import com.auditory.util.AudioLoader;
 
-public class AudioSource {
+public class AudioSource extends Component {
 	public static final float DEFAULT_GAIN = 1f;
 	public static final float DEFAULT_PITCH = 1f;
 	
