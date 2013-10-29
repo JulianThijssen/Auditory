@@ -25,6 +25,7 @@ public class ShaderLoader {
 				vertsrc.append(line + "\n");
 			}
 			in.close();
+			
 		} catch (FileNotFoundException fe) {
 			Log.debug("Vertex shader could not be found");
 		} catch (IOException ie) {
