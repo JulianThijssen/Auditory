@@ -4,7 +4,9 @@ import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.util.glu.GLU;
 
-public class Camera extends Component {
+import com.auditory.geom.Vector3;
+
+public class Camera extends GameObject {
 	public static final float   DEFAULT_FOV = 90;
 	public static final float   DEFAULT_ASPECTRATIO = 1;
 	public static final float   DEFAULT_ZNEAR = 0.3f;
@@ -18,8 +20,8 @@ public class Camera extends Component {
 	private float   zFar        = DEFAULT_ZFAR;
 	private boolean perspective = DEFAULT_PERSPECTIVE;
 	
-	public Camera(GameObject parent) {
-		super(parent);
+	public Camera(float x, float y, float z) {
+		super(new Vector3(x, y, z));
 		enablePerspective(DEFAULT_PERSPECTIVE);
 	}
 	

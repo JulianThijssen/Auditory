@@ -6,8 +6,10 @@ import java.util.List;
 import com.auditory.geom.Vector3;
 
 public abstract class GameObject {
-	//Every gameobject can potentially hold a camera
-	public Camera camera;
+	//Every gameobject can potentially have a parent
+	public GameObject parent = null;
+	//A list of children added to the game object
+	protected List<GameObject> children = new ArrayList<GameObject>();
 	//A list of components added to the game object
 	protected List<Component> components = new ArrayList<Component>();
 	//The position of the game object in global coordinates
@@ -24,11 +26,24 @@ public abstract class GameObject {
 		this.rotation = rotation;
 	}
 	
+	public void addChild(GameObject o) {
+		o.setParent(this);
+		children.add(o);
+	}
+	
 	public void addComponent(Component c) {
-		if(c instanceof Camera) {
-			camera = (Camera) c;
-		} else {
-			components.add(c);
+		components.add(c);
+	}
+	
+	public void setParent(GameObject parent) {
+		this.parent = parent;
+	}
+	
+	public void update() {
+		for(Component c: components) {
+			if(c instanceof Behaviour) {
+				((Behaviour) c).update();
+			}
 		}
 	}
 

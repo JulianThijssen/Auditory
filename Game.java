@@ -52,9 +52,10 @@ public class Game {
 		//player.addComponent(new AudioSource(player, "footstep_wood1.wav"));
 		
 		//Shaders
-		shaderProgram = S
+		//shaderProgram = S
+		
 		//Graphics
-        player.addComponent(new Camera(player));
+        player.addChild(new Camera(0, 0, 0));
         player.addComponent(new PlayerMovement(player));
 		
         
