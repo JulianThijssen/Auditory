@@ -11,25 +11,21 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.openal.AL;
 import org.lwjgl.LWJGLException;
 
-import com.auditory.audio.AudioListener;
-import com.auditory.audio.AudioSource;
-import com.auditory.behaviours.PlayerMovement;
+import com.auditory.components.AudioListener;
+import com.auditory.components.AudioSource;
 import com.auditory.components.Mesh;
-import com.auditory.entities.Player;
-import com.auditory.gameobjects.Block;
+import com.auditory.components.Transform;
 import com.auditory.geom.Face;
 import com.auditory.geom.Model;
 import com.auditory.geom.Vector3;
+import com.auditory.managers.EntityManager;
+import com.auditory.systems.PlayerMovement;
 import com.auditory.util.Log;
 import com.auditory.util.OBJLoader;
 
 public class Game {
-	
 	public Camera camera;
-	public Model model;
 	public int cubeList;
-	public Player player = new Player(0, 0, 0);
-	public Block block = new Block(0, 0, 0);
 	public int shaderProgram;
 	
 	public Game() {
@@ -55,7 +51,9 @@ public class Game {
 		//shaderProgram = S
 		
 		//Graphics
-        player.addChild(new Camera(0, 0, 0));
+		Entity player = new Entity();
+		player.addComponent(new Transform(0, 0, 0));
+        player.
         player.addComponent(new PlayerMovement(player));
 		
         
@@ -96,12 +94,15 @@ public class Game {
 	}
 	
 	public int loadModel(String filepath) {
+		Model model = null;
 		try {
 			model = OBJLoader.load("res/Fountain.obj");
 		} catch(FileNotFoundException fe) {
 			Log.debug("The file was not found");
+			return -1;
 		} catch(IOException ie) {
 			Log.debug("There was a problem while reading from file");
+			return -1;
 		}
 		
 		int list = glGenLists(1);

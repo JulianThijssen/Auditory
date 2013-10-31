@@ -3,27 +3,13 @@ package com.auditory;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.auditory.geom.Vector3;
-
-public abstract class Entity extends GameObject {	
-	protected List<GameObject> children = new ArrayList<GameObject>();
+public class Entity {
+	//The ID of this object
+	public String id = null;
+	//A list of components added to the game object
+	protected List<Component> components = new ArrayList<Component>();
 	
-	public Entity(Vector3 position) {
-		super(position);
-	}
-
-	public void update() {
-		for(Component c: components) {
-			if(c instanceof Behaviour) {
-				((Behaviour) c).update();
-			}
-		}
-		if(camera != null) {
-			camera.update();
-		}
-	}
-	
-	public void addChild(GameObject o) {
-		children.add(o);
+	public void addComponent(Component c) {
+		components.add(c);
 	}
 }

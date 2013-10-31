@@ -6,7 +6,7 @@ import org.lwjgl.util.glu.GLU;
 
 import com.auditory.geom.Vector3;
 
-public class Camera extends GameObject {
+public class Camera extends Entity {
 	public static final float   DEFAULT_FOV = 90;
 	public static final float   DEFAULT_ASPECTRATIO = 1;
 	public static final float   DEFAULT_ZNEAR = 0.3f;
