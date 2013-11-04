@@ -2,11 +2,11 @@ package com.auditory.systems;
 
 import org.lwjgl.input.Keyboard;
 
-import com.auditory.Behaviour;
+import com.auditory.System;
 import com.auditory.Entity;
 import com.auditory.geom.Vector3;
 
-public class PlayerMovement extends Behaviour {
+public class PlayerMovement extends System {
 	public static final float MAX_SPEED = 0.3f;
 	public static final float ACCELERATION = 0.05f;
 	

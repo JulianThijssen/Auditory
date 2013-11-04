@@ -1,5 +1,7 @@
 package com.auditory.systems;
 
-public class AudioSystem {
+import com.auditory.System;
+
+public class AudioSystem extends System {
 
 }

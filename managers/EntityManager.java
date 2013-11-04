@@ -8,6 +8,10 @@ import com.auditory.Entity;
 public class EntityManager {
 	public List<Entity> entities = new ArrayList<Entity>();
 	
+	public void createEntity(String id) {
+		
+	}
+	
 	public void addEntity(Entity e) {
 		entities.add(e);
 	}
