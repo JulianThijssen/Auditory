@@ -9,11 +9,12 @@ public class Transform extends Component {
 	//The rotation of the game object in euler coordinates
 	public Vector3 rotation;
 	
-	public Transform(Vector3 position) {
-		this(position, new Vector3(0, 0, 0));
+	public Transform(int id, Vector3 position) {
+		this(id, position, new Vector3(0, 0, 0));
 	}
 	
-	public Transform(Vector3 position, Vector3 rotation) {
+	public Transform(int id, Vector3 position, Vector3 rotation) {
+		super(id);
 		this.position = position;
 		this.rotation = rotation;
 	}

@@ -24,11 +24,12 @@ import com.auditory.components.Camera;
 import com.auditory.components.Mesh;
 import com.auditory.components.Transform;
 import com.auditory.geom.Vector3;
+import com.auditory.util.Map;
 
 public class RenderSystem extends System {
-	private List<Transform> transforms = new ArrayList<Transform>();
-	private List<Mesh>      meshes     = new ArrayList<Mesh>();
-	private List<Camera>    cameras    = new ArrayList<Camera>();
+	private Map<Transform> transforms = new Map<Transform>();
+	private Map<Mesh>      meshes     = new Map<Mesh>();
+	private Map<Camera>    cameras    = new Map<Camera>();
 	
 	private void applyPerspectiveMatrix(Camera camera) {
         glPushAttrib(GL_TRANSFORM_BIT);
@@ -51,10 +52,11 @@ public class RenderSystem extends System {
 	public void update() {
 		for(Camera c: cameras) {
 			int id = c.id;
-			Vector3 pos = t.position;
+			Transform t = transforms.get(id);
+			Mesh m = meshes.get(id);
 			glPushMatrix();
-			glTranslatef(pos.x, pos.y, pos.z);
-			glCallList(mesh);
+			glTranslatef(t.position.x, t.position.y, t.position.z);
+			glCallList(m.mesh);
 			glPopMatrix();
 		}
 	}
