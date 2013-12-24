@@ -23,7 +23,8 @@ import com.auditory.util.OBJLoader;
 public class Mesh extends Component {
 	public int mesh;
 	
-	public Mesh(String filepath) {
+	public Mesh(int id, String filepath) {
+		super(id);
 		mesh = loadModel(filepath);
 	}
 	
@@ -32,7 +33,7 @@ public class Mesh extends Component {
 		try {
 			model = OBJLoader.load(filepath);
 		} catch(FileNotFoundException fe) {
-			Log.debug("The file was not found");
+			Log.debug("The file was not found: " + filepath);
 			return -1;
 		} catch(IOException ie) {
 			Log.debug("There was a problem while reading from file");

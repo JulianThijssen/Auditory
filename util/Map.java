@@ -2,6 +2,7 @@ package com.auditory.util;
 
 import java.util.Iterator;
 
+import com.auditory.Entity;
 import com.auditory.components.Transform;
 import com.auditory.geom.Vector3;
 
@@ -24,6 +25,17 @@ public class Map<V> implements Iterable<V> {
 		Node n = nodes;
 		while(n != null) {
 			if(key == n.key) {
+				return n.value;
+			}
+			n = n.next;
+		}
+		return null;
+	}
+	
+	public V get(Entity e) {
+		Node n = nodes;
+		while(n != null) {
+			if(e.id == n.key) {
 				return n.value;
 			}
 			n = n.next;

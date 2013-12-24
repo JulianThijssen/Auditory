@@ -15,12 +15,4 @@ public class Entity {
 		this.world = world;
 		this.id = id;
 	}
-	
-	public void addComponent(Component c) {
-		components.add(c);
-	}
-	
-	public void getComponent() {
-		//TODO get component by type
-	}
 }

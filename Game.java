@@ -8,12 +8,12 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.openal.AL;
 import org.lwjgl.LWJGLException;
 
-import com.auditory.components.Camera;
+import com.auditory.systems.PlayerInputSystem;
+import com.auditory.systems.RenderSystem;
 import com.auditory.util.Log;
 
 public class Game {
 	public World world;
-	public Camera camera;
 	public int shaderProgram;
 	
 	public Game() {
@@ -36,11 +36,11 @@ public class Game {
 		
 		world = new World();
 		
-		Entity player = EntityFactory.createPlayer(world, 0, 0, 0);
-		world.addEntity(player);
+		world.addSystem(new RenderSystem());
+		world.addSystem(new PlayerInputSystem());
 		
-		Entity block = EntityFactory.createBlock(world, 0, 0, 0);
-		world.addEntity(block);
+		Entity player = EntityFactory.createPlayer(world, 0, 0, -2);
+		world.addEntity(player);
 		
 		//Lock the cursor to the screen
 		Mouse.setGrabbed(true);
@@ -56,18 +56,17 @@ public class Game {
 	            Mouse.setGrabbed(false);
 	        }
 			Display.sync(60);
-			Display.update();
-			
-			//Update the world
-			world.update();
 			
 			//Render
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			glColor3f(0.5f, 0.5f, 0.5f);
-			
 			glLoadIdentity();
-	        world.render();
+			
+			//Update the world
+			world.update();
+	        
+	        Display.update();
 		}
 		close();
 	}
