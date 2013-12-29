@@ -10,8 +10,10 @@ import static org.lwjgl.opengl.GL11.glPushAttrib;
 import static org.lwjgl.opengl.GL11.glRotatef;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.util.glu.GLU;
 
+import com.auditory.components.Transform;
 import com.auditory.geom.Vector3;
 
 public class Camera {
@@ -20,14 +22,56 @@ public class Camera {
 	public static final float   DEFAULT_ZNEAR = 0.3f;
 	public static final float   DEFAULT_ZFAR = 100f;
 	public static final boolean DEFAULT_PERSPECTIVE = true;
+	public static final float MIN_PITCH = -90;
+	public static final float MAX_PITCH = 90;
+	public static final float DEFAULT_SENSITIVITY = 0.1f;
 	
 	public float   fieldOfView = DEFAULT_FOV;
 	public float   aspectRatio = DEFAULT_ASPECTRATIO;
 	public float   zNear       = DEFAULT_ZNEAR;
 	public float   zFar        = DEFAULT_ZFAR;
 	public boolean perspective = DEFAULT_PERSPECTIVE;
+	private float sensitivity = DEFAULT_SENSITIVITY;
+	
+	//FIXME Taking (0,0,0) as temporary camera point
+	Vector3 position = new Vector3(0, 0, 0);
+	Vector3 rotation = new Vector3(0, 0, 0);
 	
 	public Camera() {
+		
+	}
+	
+	public void update() {
+		
+		
+		glPushAttrib(GL_TRANSFORM_BIT);
+		glMatrixMode(GL_MODELVIEW);
+		glRotatef(rotation.x, 1, 0, 0);
+		glRotatef(rotation.y, 0, 1, 0);
+		glRotatef(rotation.z, 0, 0, 1);
+		glTranslatef(-position.x, -position.y, -position.z);
+		glPopAttrib();
+				
+		float dx = Mouse.getDX() * sensitivity;
+		float dy = -Mouse.getDY() * sensitivity;
+		
+		//Pitch
+		if(rotation.x + dy > MAX_PITCH) {
+			rotation.x = MAX_PITCH;
+		} else if(rotation.x + dy < MIN_PITCH) {
+			rotation.x = MIN_PITCH;
+		} else {
+			rotation.x += dy;
+		}
+		//Yaw
+		if(rotation.y + dx > 360) {
+			rotation.y = rotation.y + dx - 360;
+		} else if(rotation.y + dx < 0) {
+			rotation.y = 360 - rotation.y + dx;
+		} else {
+			rotation.y += dx;
+		}
+		
 		
 	}
 	
@@ -38,18 +82,4 @@ public class Camera {
         GLU.gluPerspective(fieldOfView, aspectRatio, zNear, zFar);
         glPopAttrib();
     }
-	
-	public void applyTransformMatrix() {
-		//FIXME Taking (0,0,0) as temporary camera point
-		Vector3 position = new Vector3(0, 0, 0);
-		Vector3 rotation = new Vector3(0, 0, 0);
-		
-		glPushAttrib(GL_TRANSFORM_BIT);
-		glMatrixMode(GL_MODELVIEW);
-		glRotatef(rotation.x, 1, 0, 0);
-		glRotatef(rotation.y, 0, 1, 0);
-		glRotatef(rotation.z, 0, 0, 1);
-		glTranslatef(-position.x, -position.y, -position.z);
-		glPopAttrib();
-	}
 }
