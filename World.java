@@ -3,6 +3,7 @@ package com.auditory;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.auditory.components.MainPlayer;
 import com.auditory.components.Mesh;
 import com.auditory.components.Transform;
 import com.auditory.components.Velocity;
@@ -13,13 +14,17 @@ import com.auditory.util.Map;
 public class World {
 	public EntityManager entityManager = new EntityManager();
 	public IdentifierPool idpool = new IdentifierPool();
-	public List<Entity> entities = new ArrayList<Entity>();
 	
+	public List<Entity> entities = new ArrayList<Entity>();
 	public List<System> systems = new ArrayList<System>();
 	
 	public Map<Transform> transforms = new Map<Transform>();
 	public Map<Mesh>      meshes     = new Map<Mesh>();
 	public Map<Velocity>  velocities = new Map<Velocity>();
+	
+	public Camera mainCamera = new Camera();
+	public Input input = new Input(this);
+	public int playerId = -1;
 	
 	public Entity createEntity() {
 		Entity e = new Entity(this, idpool.getId());
@@ -37,6 +42,8 @@ public class World {
 			meshes.add(c.id, (Mesh) c);
 		} else if(c instanceof Velocity) {
 			velocities.add(c.id, (Velocity) c);
+		} else if(c instanceof MainPlayer) {
+			playerId = c.id;
 		}
 	}
 	
@@ -46,11 +53,20 @@ public class World {
 	}
 	
 	public void update() {
+		if(playerId != -1) {
+			Entity player = entities.get(playerId);
+			input.update(player);
+			mainCamera.setPosition(transforms.get(player).position);
+		}
+		
+		mainCamera.update();
+		
 		for(System s: systems) {
 			for(Entity e: entities) {
 				s.update(e);
 			}
 		}
+		
 	}
 	
 	public void destroy() {

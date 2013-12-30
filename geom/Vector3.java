@@ -9,10 +9,25 @@ public class Vector3 {
 		this.z = z;
 	}
 	
-	public void add(Vector3 v) {
+	public Vector3 add(Vector3 v) {
 		x += v.x;
 		y += v.y;
 		z += v.z;
+		return this;
+	}
+	
+	public Vector3 subtract(Vector3 v) {
+		x -= v.x;
+		y -= v.y;
+		z -= v.z;
+		return this;
+	}
+	
+	public Vector3 scale(float factor) {
+		x *= factor;
+		y *= factor;
+		z *= factor;
+		return this;
 	}
 	
 	public static Vector3 add(Vector3 v1, Vector3 v2) {
@@ -39,12 +54,6 @@ public class Vector3 {
 		x = x / length;
 		y = y / length;
 		z = z / length;
-	}
-	
-	public void scale(float factor) {
-		x *= factor;
-		y *= factor;
-		z *= factor;
 	}
 	
 	@Override

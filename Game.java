@@ -8,7 +8,6 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.openal.AL;
 import org.lwjgl.LWJGLException;
 
-import com.auditory.systems.PlayerInputSystem;
 import com.auditory.systems.RenderSystem;
 import com.auditory.util.Log;
 
@@ -37,11 +36,11 @@ public class Game {
 		world = new World();
 		
 		world.addSystem(new RenderSystem());
-		world.addSystem(new PlayerInputSystem());
 		
-		Entity player = EntityFactory.createPlayer(world, 0, 0, -2);
+		Entity player = EntityFactory.createPlayer(world, 0, 0, 0);
+		Entity cube = EntityFactory.createCube(world, 0, 0, -2);
 		world.addEntity(player);
-		
+		world.addEntity(cube);
 		//Lock the cursor to the screen
 		Mouse.setGrabbed(true);
 		

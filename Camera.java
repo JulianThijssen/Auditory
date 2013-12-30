@@ -13,8 +13,8 @@ import static org.lwjgl.opengl.GL11.glTranslatef;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.glu.GLU;
 
-import com.auditory.components.Transform;
 import com.auditory.geom.Vector3;
+import com.auditory.util.Rotation;
 
 public class Camera {
 	public static final float   DEFAULT_FOV = 90;
@@ -31,27 +31,23 @@ public class Camera {
 	public float   zNear       = DEFAULT_ZNEAR;
 	public float   zFar        = DEFAULT_ZFAR;
 	public boolean perspective = DEFAULT_PERSPECTIVE;
-	private float sensitivity = DEFAULT_SENSITIVITY;
+	private float  sensitivity = DEFAULT_SENSITIVITY;
 	
 	//FIXME Taking (0,0,0) as temporary camera point
 	Vector3 position = new Vector3(0, 0, 0);
 	Vector3 rotation = new Vector3(0, 0, 0);
 	
-	public Camera() {
-		
+	public Vector3 getRotation() {
+		return rotation;
+	}
+	
+	public void setPosition(Vector3 position) {
+		this.position = position;
 	}
 	
 	public void update() {
+		applyPerspectiveMatrix();
 		
-		
-		glPushAttrib(GL_TRANSFORM_BIT);
-		glMatrixMode(GL_MODELVIEW);
-		glRotatef(rotation.x, 1, 0, 0);
-		glRotatef(rotation.y, 0, 1, 0);
-		glRotatef(rotation.z, 0, 0, 1);
-		glTranslatef(-position.x, -position.y, -position.z);
-		glPopAttrib();
-				
 		float dx = Mouse.getDX() * sensitivity;
 		float dy = -Mouse.getDY() * sensitivity;
 		
@@ -72,14 +68,24 @@ public class Camera {
 			rotation.y += dx;
 		}
 		
-		
+		glPushAttrib(GL_TRANSFORM_BIT);
+			glMatrixMode(GL_MODELVIEW);
+			glTranslatef(-position.x, -position.y, -position.z);
+			
+			//FIXME
+			//Vector3 axis = Rotation.eulerToAxis(rotation);
+			//glRotatef(0, -axis.x, -axis.y, -axis.z);
+			glRotatef(rotation.x, 1, 0, 0);
+			glRotatef(rotation.y, 0, 1, 0);
+			glRotatef(rotation.z, 0, 0, 1);
+		glPopAttrib();
 	}
 	
 	public void applyPerspectiveMatrix() {
         glPushAttrib(GL_TRANSFORM_BIT);
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        GLU.gluPerspective(fieldOfView, aspectRatio, zNear, zFar);
+	        glMatrixMode(GL_PROJECTION);
+	        glLoadIdentity();
+	        GLU.gluPerspective(fieldOfView, aspectRatio, zNear, zFar);
         glPopAttrib();
     }
 }
