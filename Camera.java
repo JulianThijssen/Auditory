@@ -46,8 +46,6 @@ public class Camera {
 	}
 	
 	public void update() {
-		applyPerspectiveMatrix();
-		
 		float dx = Mouse.getDX() * sensitivity;
 		float dy = -Mouse.getDY() * sensitivity;
 		
@@ -68,24 +66,20 @@ public class Camera {
 			rotation.y += dx;
 		}
 		
-		glPushAttrib(GL_TRANSFORM_BIT);
-			glMatrixMode(GL_MODELVIEW);
-			glTranslatef(-position.x, -position.y, -position.z);
-			
-			//FIXME
-			//Vector3 axis = Rotation.eulerToAxis(rotation);
-			//glRotatef(0, -axis.x, -axis.y, -axis.z);
-			glRotatef(rotation.x, 1, 0, 0);
-			glRotatef(rotation.y, 0, 1, 0);
-			glRotatef(rotation.z, 0, 0, 1);
-		glPopAttrib();
+		glTranslatef(-position.x, -position.y, -position.z);
+		
+		//FIXME
+		//Vector3 axis = Rotation.eulerToAxis(rotation);
+		//glRotatef(0, -axis.x, -axis.y, -axis.z);
+		glRotatef(rotation.x, 1, 0, 0);
+		glRotatef(rotation.y, 0, 1, 0);
+		glRotatef(rotation.z, 0, 0, 1);
 	}
 	
 	public void applyPerspectiveMatrix() {
-        glPushAttrib(GL_TRANSFORM_BIT);
-	        glMatrixMode(GL_PROJECTION);
-	        glLoadIdentity();
-	        GLU.gluPerspective(fieldOfView, aspectRatio, zNear, zFar);
-        glPopAttrib();
+		glMatrixMode(GL_PROJECTION);
+	    
+        glLoadIdentity();
+        GLU.gluPerspective(fieldOfView, aspectRatio, zNear, zFar);
     }
 }

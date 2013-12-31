@@ -1,5 +1,7 @@
 package com.auditory;
 
+import static org.lwjgl.opengl.GL11.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +61,8 @@ public class World {
 			mainCamera.setPosition(transforms.get(player).position);
 		}
 		
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
 		mainCamera.update();
 		
 		for(System s: systems) {
@@ -66,7 +70,8 @@ public class World {
 				s.update(e);
 			}
 		}
-		
+		glPopMatrix();
+		mainCamera.applyPerspectiveMatrix();
 	}
 	
 	public void destroy() {
