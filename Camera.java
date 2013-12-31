@@ -1,12 +1,8 @@
 package com.auditory;
 
-import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
 import static org.lwjgl.opengl.GL11.GL_PROJECTION;
-import static org.lwjgl.opengl.GL11.GL_TRANSFORM_BIT;
 import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static org.lwjgl.opengl.GL11.glMatrixMode;
-import static org.lwjgl.opengl.GL11.glPopAttrib;
-import static org.lwjgl.opengl.GL11.glPushAttrib;
 import static org.lwjgl.opengl.GL11.glRotatef;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 
@@ -14,7 +10,6 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.glu.GLU;
 
 import com.auditory.geom.Vector3;
-import com.auditory.util.Rotation;
 
 public class Camera {
 	public static final float   DEFAULT_FOV = 90;
@@ -65,7 +60,7 @@ public class Camera {
 		} else {
 			rotation.y += dx;
 		}
-		
+
 		glTranslatef(-position.x, -position.y, -position.z);
 		
 		//FIXME

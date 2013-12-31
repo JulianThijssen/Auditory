@@ -37,8 +37,8 @@ public class Game {
 		
 		world.addSystem(new RenderSystem());
 		
-		Entity player = EntityFactory.createPlayer(world, 0, 0, 0);
-		Entity cube = EntityFactory.createCube(world, 0, 0, -2);
+		Entity player = EntityFactory.createPlayer(world, 0, 0, 5);
+		Entity cube = EntityFactory.createCube(world, 0, 0, -5);
 		world.addEntity(player);
 		world.addEntity(cube);
 		//Lock the cursor to the screen
@@ -60,6 +60,7 @@ public class Game {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			glColor3f(0.5f, 0.5f, 0.5f);
+			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
 			
 			//Update the world

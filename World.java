@@ -61,7 +61,6 @@ public class World {
 			mainCamera.setPosition(transforms.get(player).position);
 		}
 		
-		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
 		mainCamera.update();
 		
