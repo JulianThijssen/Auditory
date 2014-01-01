@@ -20,7 +20,7 @@ public class EntityFactory {
 		Entity e = world.createEntity();
 		world.addComponent(new Transform(e.id, new Vector3(x, y, z)));
 		world.addComponent(new Velocity(e.id, new Vector3(0, 0, 0)));
-		world.addComponent(new Mesh(e.id, "res/Cube.obj"));
+		world.addComponent(new Mesh(e.id, "res/armadillo.obj"));
 		return e;
 	}
 }

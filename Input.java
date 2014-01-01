@@ -33,11 +33,11 @@ public class Input {
 		backward = Keyboard.isKeyDown(Keyboard.KEY_S);
 		left = Keyboard.isKeyDown(Keyboard.KEY_A);
 		right = Keyboard.isKeyDown(Keyboard.KEY_D);
-		Log.debug(world.mainCamera.getRotation().toString());
-		Vector3 camRot = Rotation.eulerToAxis(world.mainCamera.getRotation());
-		Log.debug(camRot.toString());
-		if(forward)  {v.velocity.add(camRot.scale(ACCELERATION));}
-		if(backward) {v.velocity.subtract(camRot.scale(ACCELERATION));}
+		
+		Vector3 cameraDir = Rotation.eulerToAxis(world.mainCamera.getRotation());
+		
+		if(forward)  {v.velocity.add(cameraDir.scale(ACCELERATION));}
+		if(backward) {v.velocity.subtract(cameraDir.scale(ACCELERATION));}
 		if(left)     {v.velocity.x -= ACCELERATION;}
 		if(right)    {v.velocity.x += ACCELERATION;}
 		if(!forward && !backward) {v.velocity.scale(0);}

@@ -58,7 +58,11 @@ public class Game {
 			
 			//Render
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			glEnable(GL_DEPTH_TEST);
+			glEnable(GL_LIGHTING);
+			glEnable(GL_LIGHT0);
+			
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			glColor3f(0.5f, 0.5f, 0.5f);
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();

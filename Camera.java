@@ -62,9 +62,6 @@ public class Camera {
 			rotation.y += dx;
 		}
 
-		//FIXME
-		//Vector3 axis = Rotation.eulerToAxis(rotation);
-		//glRotatef(0, -axis.x, -axis.y, -axis.z);
 		glRotatef(rotation.x, 1, 0, 0);
 		glRotatef(rotation.y, 0, 1, 0);
 		glRotatef(rotation.z, 0, 0, 1);
