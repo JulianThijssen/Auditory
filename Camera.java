@@ -10,6 +10,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.glu.GLU;
 
 import com.auditory.geom.Vector3;
+import com.auditory.util.Log;
 
 public class Camera {
 	public static final float   DEFAULT_FOV = 90;
@@ -61,14 +62,14 @@ public class Camera {
 			rotation.y += dx;
 		}
 
-		glTranslatef(-position.x, -position.y, -position.z);
-		
 		//FIXME
 		//Vector3 axis = Rotation.eulerToAxis(rotation);
 		//glRotatef(0, -axis.x, -axis.y, -axis.z);
 		glRotatef(rotation.x, 1, 0, 0);
 		glRotatef(rotation.y, 0, 1, 0);
 		glRotatef(rotation.z, 0, 0, 1);
+		
+		glTranslatef(-position.x, -position.y, -position.z);
 	}
 	
 	public void applyPerspectiveMatrix() {

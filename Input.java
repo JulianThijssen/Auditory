@@ -5,6 +5,7 @@ import org.lwjgl.input.Keyboard;
 import com.auditory.components.Transform;
 import com.auditory.components.Velocity;
 import com.auditory.geom.Vector3;
+import com.auditory.util.Log;
 import com.auditory.util.Rotation;
 
 public class Input {
@@ -32,8 +33,9 @@ public class Input {
 		backward = Keyboard.isKeyDown(Keyboard.KEY_S);
 		left = Keyboard.isKeyDown(Keyboard.KEY_A);
 		right = Keyboard.isKeyDown(Keyboard.KEY_D);
+		Log.debug(world.mainCamera.getRotation().toString());
 		Vector3 camRot = Rotation.eulerToAxis(world.mainCamera.getRotation());
-
+		Log.debug(camRot.toString());
 		if(forward)  {v.velocity.add(camRot.scale(ACCELERATION));}
 		if(backward) {v.velocity.subtract(camRot.scale(ACCELERATION));}
 		if(left)     {v.velocity.x -= ACCELERATION;}
