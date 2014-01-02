@@ -3,8 +3,11 @@ package com.auditory;
 import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.openal.AL;
 import org.lwjgl.LWJGLException;
 
@@ -20,21 +23,25 @@ public class Game {
 	}
 	
 	public void init() {
+		PixelFormat pixelFormat = new PixelFormat();
+		ContextAttribs contextAttributes = new ContextAttribs(3, 2).withForwardCompatible(true).withProfileCore(true);
+
 		try {
 			Display.setDisplayMode(new DisplayMode(512, 512));
-			Display.create();
+			Display.setTitle("Auditory");
+			Display.create(pixelFormat, contextAttributes);
 			AL.create();
 		} catch(LWJGLException e) {
 			e.printStackTrace();
 			Log.debug("Failed to create window");
 			return;
 		}
-		
+		Log.debug("OpenGL version: " + GL11.glGetString(GL11.GL_VERSION));
 		//Shaders
 		//shaderProgram = S
 		
 		world = new World();
-		
+
 		world.addSystem(new RenderSystem());
 		
 		Entity player = EntityFactory.createPlayer(world, 0, 0, 5);

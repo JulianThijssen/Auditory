@@ -9,6 +9,7 @@ import static org.lwjgl.opengl.GL11.glGenLists;
 import static org.lwjgl.opengl.GL11.glNewList;
 import static org.lwjgl.opengl.GL11.glNormal3f;
 import static org.lwjgl.opengl.GL11.glVertex3f;
+import static org.lwjgl.opengl.GL30.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
