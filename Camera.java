@@ -1,16 +1,11 @@
 package com.auditory;
 
-import static org.lwjgl.opengl.GL11.GL_PROJECTION;
-import static org.lwjgl.opengl.GL11.glLoadIdentity;
-import static org.lwjgl.opengl.GL11.glMatrixMode;
 import static org.lwjgl.opengl.GL11.glRotatef;
 import static org.lwjgl.opengl.GL11.glTranslatef;
 
 import org.lwjgl.input.Mouse;
-import org.lwjgl.util.glu.GLU;
-
-import com.auditory.geom.Vector3;
-import com.auditory.util.Log;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 
 public class Camera {
 	public static final float   DEFAULT_FOV = 90;
@@ -18,9 +13,9 @@ public class Camera {
 	public static final float   DEFAULT_ZNEAR = 0.3f;
 	public static final float   DEFAULT_ZFAR = 100f;
 	public static final boolean DEFAULT_PERSPECTIVE = true;
-	public static final float MIN_PITCH = -90;
-	public static final float MAX_PITCH = 90;
-	public static final float DEFAULT_SENSITIVITY = 0.1f;
+	public static final float   MIN_PITCH = -90;
+	public static final float   MAX_PITCH = 90;
+	public static final float   DEFAULT_SENSITIVITY = 0.1f;
 	
 	public float   fieldOfView = DEFAULT_FOV;
 	public float   aspectRatio = DEFAULT_ASPECTRATIO;
@@ -29,15 +24,26 @@ public class Camera {
 	public boolean perspective = DEFAULT_PERSPECTIVE;
 	private float  sensitivity = DEFAULT_SENSITIVITY;
 	
-	//FIXME Taking (0,0,0) as temporary camera point
-	Vector3 position = new Vector3(0, 0, 0);
-	Vector3 rotation = new Vector3(0, 0, 0);
+	private Matrix4f projectionMatrix = new Matrix4f();
 	
-	public Vector3 getRotation() {
+	//FIXME Taking (0,0,0) as temporary camera point
+	Vector3f position = new Vector3f(0, 0, 0);
+	Vector3f rotation = new Vector3f(0, 0, 0);
+	
+	public Camera() {
+		projectionMatrix.m00 = (float) (1 / Math.tan(Math.toRadians(fieldOfView / 2f)));
+		projectionMatrix.m11 = (float) (1 / Math.tan(Math.toRadians(fieldOfView / 2f)));
+		projectionMatrix.m22 = -((zFar + zNear) / (zFar - zNear));
+		projectionMatrix.m23 = -1;
+		projectionMatrix.m32 = -((2 * zNear * zFar) / (zFar - zNear));
+		projectionMatrix.m33 = 0;
+	}
+	
+	public Vector3f getRotation() {
 		return rotation;
 	}
 	
-	public void setPosition(Vector3 position) {
+	public void setPosition(Vector3f position) {
 		this.position = position;
 	}
 	
@@ -69,10 +75,7 @@ public class Camera {
 		glTranslatef(-position.x, -position.y, -position.z);
 	}
 	
-	public void applyPerspectiveMatrix() {
-		glMatrixMode(GL_PROJECTION);
-	    
-        glLoadIdentity();
-        GLU.gluPerspective(fieldOfView, aspectRatio, zNear, zFar);
+	public Matrix4f getPerspectiveMatrix() {
+		return projectionMatrix;
     }
 }

@@ -1,12 +1,11 @@
 package com.auditory;
 
-import static org.lwjgl.opengl.GL11.*;
-
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.openal.AL;
 import org.lwjgl.LWJGLException;
@@ -16,7 +15,6 @@ import com.auditory.util.Log;
 
 public class Game {
 	public World world;
-	public int shaderProgram;
 	
 	public Game() {
 		init();
@@ -29,7 +27,8 @@ public class Game {
 		try {
 			Display.setDisplayMode(new DisplayMode(512, 512));
 			Display.setTitle("Auditory");
-			Display.create(pixelFormat, contextAttributes);
+			Display.create();
+			//Display.create(pixelFormat, contextAttributes);
 			AL.create();
 		} catch(LWJGLException e) {
 			e.printStackTrace();
@@ -63,20 +62,9 @@ public class Game {
 	        }
 			Display.sync(60);
 			
-			//Render
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glEnable(GL_DEPTH_TEST);
-			glEnable(GL_LIGHTING);
-			glEnable(GL_LIGHT0);
-			
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			glColor3f(0.5f, 0.5f, 0.5f);
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-			
 			//Update the world
 			world.update();
-	        
+			
 	        Display.update();
 		}
 		close();

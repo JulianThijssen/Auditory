@@ -5,9 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.lwjgl.util.vector.Vector3f;
+
 import com.auditory.geom.Face;
 import com.auditory.geom.Model;
-import com.auditory.geom.Vector3;
 
 public class OBJLoader {
 	/**
@@ -27,13 +28,13 @@ public class OBJLoader {
 				float x = Float.parseFloat(segments[1]);
 				float y = Float.parseFloat(segments[2]);
 				float z = Float.parseFloat(segments[3]);
-				model.vertices.add(new Vector3(x, y, z));
+				model.vertices.add(new Vector3f(x, y, z));
 			}
 			if(type.equals("vn")) {
 				float x = Float.parseFloat(segments[1]);
 				float y = Float.parseFloat(segments[2]);
 				float z = Float.parseFloat(segments[3]);
-				model.normals.add(new Vector3(x, y, z));
+				model.normals.add(new Vector3f(x, y, z));
 			}
 			if(type.equals("f")) {
 				int[] vertices = new int[3];

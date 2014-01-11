@@ -5,6 +5,9 @@ import static org.lwjgl.opengl.GL11.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.vector.Matrix4f;
+
 import com.auditory.components.MainPlayer;
 import com.auditory.components.Mesh;
 import com.auditory.components.Transform;
@@ -12,6 +15,7 @@ import com.auditory.components.Velocity;
 import com.auditory.managers.EntityManager;
 import com.auditory.util.IdentifierPool;
 import com.auditory.util.Map;
+import com.auditory.util.ShaderLoader;
 
 public class World {
 	public EntityManager entityManager = new EntityManager();
@@ -27,6 +31,11 @@ public class World {
 	public Camera mainCamera = new Camera();
 	public Input input = new Input(this);
 	public int playerId = -1;
+	
+	public Matrix4f projectionMatrix = new Matrix4f();
+	public Matrix4f viewMatrix = new Matrix4f();
+	public Matrix4f modelMatrix = new Matrix4f();
+	public int shaderProgram = ShaderLoader.loadShaders("res/shader.vert", "res/shader.frag");
 	
 	public Entity createEntity() {
 		Entity e = new Entity(this, idpool.getId());
@@ -55,13 +64,19 @@ public class World {
 	}
 	
 	public void update() {
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
+		GL20.glUseProgram(shaderProgram);
+		
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		modelMatrix.setIdentity();
+		
 		if(playerId != -1) {
 			Entity player = entities.get(playerId);
 			input.update(player);
 			mainCamera.setPosition(transforms.get(player).position);
 		}
 		
-		glPushMatrix();
 		mainCamera.update();
 		
 		for(System s: systems) {
@@ -69,8 +84,10 @@ public class World {
 				s.update(e);
 			}
 		}
-		glPopMatrix();
-		mainCamera.applyPerspectiveMatrix();
+
+		projectionMatrix = mainCamera.getPerspectiveMatrix();
+		
+		GL20.glUseProgram(0);
 	}
 	
 	public void destroy() {

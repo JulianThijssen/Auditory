@@ -2,9 +2,10 @@ package com.auditory.util;
 
 import java.util.Iterator;
 
+import org.lwjgl.util.vector.Vector3f;
+
 import com.auditory.Entity;
 import com.auditory.components.Transform;
-import com.auditory.geom.Vector3;
 
 public class Map<V> implements Iterable<V> {
 	Node nodes = null;
@@ -98,10 +99,10 @@ public class Map<V> implements Iterable<V> {
 	public static void main(String[] args) {
 		Map<Transform> map = new Map<Transform>();
 		
-		Transform t1 = new Transform(1, new Vector3(0, 0, 0));
-		Transform t2 = new Transform(2, new Vector3(1, 2, 3));
-		Transform t3 = new Transform(3, new Vector3(2, 4, 6));
-		Transform t4 = new Transform(4, new Vector3(3, 6, 9));
+		Transform t1 = new Transform(1, new Vector3f(0, 0, 0));
+		Transform t2 = new Transform(2, new Vector3f(1, 2, 3));
+		Transform t3 = new Transform(3, new Vector3f(2, 4, 6));
+		Transform t4 = new Transform(4, new Vector3f(3, 6, 9));
 		
 		map.add(t1.id, t1);
 		map.add(t2.id, t2);

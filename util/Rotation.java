@@ -1,6 +1,7 @@
 package com.auditory.util;
 
-import com.auditory.geom.Vector3;
+import org.lwjgl.util.vector.Vector3f;
+
 
 /*
  * The following are the CCW rotation matrices for pitch and yaw where A is the angle in degrees.
@@ -26,18 +27,18 @@ import com.auditory.geom.Vector3;
  * [  sinY -sinPcosY   cosYcosP]
  */
 public class Rotation {
-	public static Vector3 eulerToAxis(Vector3 euler) {
+	public static Vector3f eulerToAxis(Vector3f euler) {
 		float pitch = (float)(Math.toRadians(euler.x));
 		float yaw = (float)(Math.toRadians(euler.y));
 		
-		Vector3 v = new Vector3(0, 0, -1);
+		Vector3f v = new Vector3f(0, 0, -1);
 		
-//		Vector3 pitchv = new Vector3(v.x, (float) ((Math.cos(pitch) * v.y) + (Math.sin(pitch) * v.z)), (float) ((-Math.sin(pitch) * v.y) + (Math.cos(pitch) * v.z)));
-//		Vector3 yawv   = new Vector3((float) ((Math.cos(yaw) * v.x) + (-Math.sin(yaw) * v.z)), v.y, (float) ((Math.sin(yaw) * v.x) + (Math.cos(yaw) * v.z)));
-//		Vector3 c1     = new Vector3((float) ((Math.cos(yaw) * v.x) + (-Math.sin(yaw) * v.z)),
+//		Vector3f pitchv = new Vector3f(v.x, (float) ((Math.cos(pitch) * v.y) + (Math.sin(pitch) * v.z)), (float) ((-Math.sin(pitch) * v.y) + (Math.cos(pitch) * v.z)));
+//		Vector3f yawv   = new Vector3f((float) ((Math.cos(yaw) * v.x) + (-Math.sin(yaw) * v.z)), v.y, (float) ((Math.sin(yaw) * v.x) + (Math.cos(yaw) * v.z)));
+//		Vector3f c1     = new Vector3f((float) ((Math.cos(yaw) * v.x) + (-Math.sin(yaw) * v.z)),
 //									 (float) ((Math.sin(pitch) * Math.sin(yaw) * v.x) + (Math.cos(pitch) * v.y) + (Math.sin(pitch) * Math.cos(yaw) * v.z)),
 //									 (float) ((Math.cos(pitch) * Math.sin(yaw) * v.x) + (-Math.sin(pitch) * v.y) + (Math.cos(pitch) * Math.cos(yaw) * v.z)));
-		Vector3 c2     = new Vector3((float) ((Math.cos(yaw) * v.x) + (Math.sin(yaw) * Math.sin(pitch) * v.y) + (-Math.sin(yaw) * Math.cos(pitch) * v.z)),
+		Vector3f c2     = new Vector3f((float) ((Math.cos(yaw) * v.x) + (Math.sin(yaw) * Math.sin(pitch) * v.y) + (-Math.sin(yaw) * Math.cos(pitch) * v.z)),
 									 (float) ((Math.cos(pitch) * v.y) + (Math.sin(pitch) * v.z)),
 									 (float) ((Math.sin(yaw) * v.x) + (-Math.sin(pitch) * Math.cos(yaw) * v.y) + (Math.cos(yaw) * Math.cos(pitch) * v.z)));
 		return c2;

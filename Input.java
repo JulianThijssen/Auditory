@@ -1,11 +1,10 @@
 package com.auditory;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Vector3f;
 
 import com.auditory.components.Transform;
 import com.auditory.components.Velocity;
-import com.auditory.geom.Vector3;
-import com.auditory.util.Log;
 import com.auditory.util.Rotation;
 
 public class Input {
@@ -34,10 +33,11 @@ public class Input {
 		left = Keyboard.isKeyDown(Keyboard.KEY_A);
 		right = Keyboard.isKeyDown(Keyboard.KEY_D);
 		
-		Vector3 cameraDir = Rotation.eulerToAxis(world.mainCamera.getRotation());
+		Vector3f cameraDir = Rotation.eulerToAxis(world.mainCamera.getRotation());
+		Vector3f direction = (Vector3f) cameraDir.scale(ACCELERATION);
 		
-		if(forward)  {v.velocity.add(cameraDir.scale(ACCELERATION));}
-		if(backward) {v.velocity.subtract(cameraDir.scale(ACCELERATION));}
+		if(forward)  {Vector3f.add(v.velocity, direction, v.velocity);}
+		if(backward) {Vector3f.sub(v.velocity, direction, v.velocity);}
 		if(left)     {v.velocity.x -= ACCELERATION;}
 		if(right)    {v.velocity.x += ACCELERATION;}
 		if(!forward && !backward) {v.velocity.scale(0);}
@@ -47,6 +47,6 @@ public class Input {
 			v.velocity.scale(MAX_SPEED);
 		}
 		
-		t.position.add(v.velocity);
+		Vector3f.add(t.position, v.velocity, t.position);
 	}
 }
