@@ -17,6 +17,7 @@ public class ShaderLoader {
 		glAttachShader(shaderProgram, fragmentShader);
 		
 		//Position information will be attribute 0
+		glGetUniformLocation(shaderProgram, "modelMatrix");
 		glBindAttribLocation(shaderProgram, 0, "in_Position");
 		glBindAttribLocation(shaderProgram, 1, "in_Color");
 		

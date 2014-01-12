@@ -5,7 +5,6 @@ import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.openal.AL;
 import org.lwjgl.LWJGLException;
@@ -36,8 +35,6 @@ public class Game {
 			return;
 		}
 		Log.debug("OpenGL version: " + GL11.glGetString(GL11.GL_VERSION));
-		//Shaders
-		//shaderProgram = S
 		
 		world = new World();
 
