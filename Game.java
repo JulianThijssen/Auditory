@@ -35,8 +35,6 @@ public class Game {
 			return;
 		}
 		Log.debug("OpenGL version: " + GL11.glGetString(GL11.GL_VERSION));
-		//Shaders
-		//shaderProgram = S
 		
 		world = new World();
 
