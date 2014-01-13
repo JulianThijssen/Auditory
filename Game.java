@@ -5,7 +5,6 @@ import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.openal.AL;
 import org.lwjgl.LWJGLException;
