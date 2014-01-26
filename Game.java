@@ -26,8 +26,8 @@ public class Game {
 		try {
 			Display.setDisplayMode(new DisplayMode(512, 512));
 			Display.setTitle("Auditory");
-			Display.create();
-			//Display.create(pixelFormat, contextAttributes);
+			//Display.create();
+			Display.create(pixelFormat, contextAttributes);
 			AL.create();
 		} catch(LWJGLException e) {
 			e.printStackTrace();

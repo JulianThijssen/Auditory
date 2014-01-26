@@ -32,9 +32,10 @@ public class World {
 	public Input input = new Input(this);
 	public int playerId = -1;
 	
-	public Matrix4f projectionMatrix = new Matrix4f();
-	public Matrix4f viewMatrix = new Matrix4f();
+	public Matrix4f projectionMatrix, viewMatrix;
 	public Matrix4f modelMatrix = new Matrix4f();
+	public int projLoc, viewLoc, modelLoc;
+	
 	public int shaderProgram = ShaderLoader.loadShaders("res/shader.vert", "res/shader.frag");
 	
 	public Entity createEntity() {
@@ -64,7 +65,12 @@ public class World {
 	}
 	
 	public void update() {
+		glClearColor(0.0f, 0.0f, 0.2f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
+		projLoc = GL20.glGetUniformLocation(shaderProgram, "projectionMatrix");
+		viewLoc = GL20.glGetUniformLocation(shaderProgram, "viewMatrix");
+		modelLoc = GL20.glGetUniformLocation(shaderProgram, "modelMatrix");
 		
 		GL20.glUseProgram(shaderProgram);
 		
@@ -74,18 +80,20 @@ public class World {
 		if(playerId != -1) {
 			Entity player = entities.get(playerId);
 			input.update(player);
-			mainCamera.setPosition(transforms.get(player).position);
+			//mainCamera.setPosition(transforms.get(player).position);
 		}
 		
+		
 		mainCamera.update();
+		
+		projectionMatrix = mainCamera.getPerspectiveMatrix();
+		viewMatrix = mainCamera.getViewMatrix();
 		
 		for(System s: systems) {
 			for(Entity e: entities) {
 				s.update(e);
 			}
 		}
-
-		projectionMatrix = mainCamera.getPerspectiveMatrix();
 		
 		GL20.glUseProgram(0);
 	}

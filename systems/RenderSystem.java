@@ -1,5 +1,8 @@
 package com.auditory.systems;
 
+import java.nio.FloatBuffer;
+
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
@@ -10,6 +13,7 @@ import com.auditory.Entity;
 import com.auditory.System;
 import com.auditory.components.Mesh;
 import com.auditory.components.Transform;
+import com.auditory.util.Log;
 
 public class RenderSystem extends System {
 	Vector3f axisX = new Vector3f(1, 0, 0);
@@ -25,12 +29,27 @@ public class RenderSystem extends System {
 			return;
 		}
 		
+		Matrix4f projectionMatrix = world.projectionMatrix;
+		Matrix4f viewMatrix = world.viewMatrix;
 		Matrix4f modelMatrix = world.modelMatrix;
 		modelMatrix.translate(new Vector3f(t.position.x, t.position.y, t.position.z));
 		modelMatrix.rotate(t.rotation.x, axisX);
 		modelMatrix.rotate(t.rotation.y, axisY);
 		modelMatrix.rotate(t.rotation.z, axisZ);
-			
+		
+		FloatBuffer projBuffer = BufferUtils.createFloatBuffer(16);
+		projectionMatrix.store(projBuffer);
+		FloatBuffer viewBuffer = BufferUtils.createFloatBuffer(16);
+		viewMatrix.store(viewBuffer);
+		FloatBuffer modelBuffer = BufferUtils.createFloatBuffer(16);
+		projectionMatrix.store(modelBuffer);
+		GL20.glUniformMatrix4(world.projLoc, false, projBuffer);
+		GL20.glUniformMatrix4(world.projLoc, false, viewBuffer);
+		GL20.glUniformMatrix4(world.projLoc, false, modelBuffer);
+		
+		//Log.debug("View matrix: " + viewMatrix.toString());
+		//Log.debug("Buffer: " + projBuffer.get(11));
+		
 		GL30.glBindVertexArray(m.mesh);
 		GL20.glEnableVertexAttribArray(0);
 		

@@ -1,8 +1,5 @@
 package com.auditory;
 
-import static org.lwjgl.opengl.GL11.glRotatef;
-import static org.lwjgl.opengl.GL11.glTranslatef;
-
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
@@ -24,7 +21,12 @@ public class Camera {
 	public boolean perspective = DEFAULT_PERSPECTIVE;
 	private float  sensitivity = DEFAULT_SENSITIVITY;
 	
+	Vector3f axisX = new Vector3f(1, 0, 0);
+	Vector3f axisY = new Vector3f(0, 1, 0);
+	Vector3f axisZ = new Vector3f(0, 0, 1);
+	
 	private Matrix4f projectionMatrix = new Matrix4f();
+	private Matrix4f viewMatrix = new Matrix4f();
 	
 	//FIXME Taking (0,0,0) as temporary camera point
 	Vector3f position = new Vector3f(0, 0, 0);
@@ -48,6 +50,8 @@ public class Camera {
 	}
 	
 	public void update() {
+		viewMatrix.setIdentity();
+		
 		float dx = Mouse.getDX() * sensitivity;
 		float dy = -Mouse.getDY() * sensitivity;
 		
@@ -68,11 +72,14 @@ public class Camera {
 			rotation.y += dx;
 		}
 
-		glRotatef(rotation.x, 1, 0, 0);
-		glRotatef(rotation.y, 0, 1, 0);
-		glRotatef(rotation.z, 0, 0, 1);
-		
-		glTranslatef(-position.x, -position.y, -position.z);
+		/*viewMatrix.rotate(rotation.x, axisX);
+		viewMatrix.rotate(rotation.y, axisY);
+		viewMatrix.rotate(rotation.z, axisZ);
+		viewMatrix.translate(new Vector3f(-position.x, -position.y, -position.z));*/
+	}
+	
+	public Matrix4f getViewMatrix() {
+		return viewMatrix;
 	}
 	
 	public Matrix4f getPerspectiveMatrix() {

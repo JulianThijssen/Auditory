@@ -6,6 +6,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.lwjgl.opengl.GL20;
+
 public class ShaderLoader {
 	public static int loadShaders(String vertpath, String fragpath) {
 		int vertexShader = loadShader(vertpath, GL_VERTEX_SHADER);
@@ -13,6 +15,8 @@ public class ShaderLoader {
 		
 		int shaderProgram = glCreateProgram();
 		
+		System.out.println(GL20.glGetShaderInfoLog(vertexShader, 1000));
+		System.out.println(GL20.glGetShaderInfoLog(fragmentShader, 1000));
 		glAttachShader(shaderProgram, vertexShader);
 		glAttachShader(shaderProgram, fragmentShader);
 		
