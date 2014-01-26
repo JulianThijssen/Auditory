@@ -23,7 +23,8 @@ public class ShaderLoader {
 		//Position information will be attribute 0
 		glGetUniformLocation(shaderProgram, "modelMatrix");
 		glBindAttribLocation(shaderProgram, 0, "in_Position");
-		glBindAttribLocation(shaderProgram, 1, "in_Color");
+		glBindAttribLocation(shaderProgram, 1, "in_Normal");
+		glBindAttribLocation(shaderProgram, 2, "in_Color");
 		
 		glLinkProgram(shaderProgram);
 		glValidateProgram(shaderProgram);

@@ -14,6 +14,7 @@ import com.auditory.components.Transform;
 import com.auditory.components.Velocity;
 import com.auditory.managers.EntityManager;
 import com.auditory.util.IdentifierPool;
+import com.auditory.util.Log;
 import com.auditory.util.Map;
 import com.auditory.util.ShaderLoader;
 
@@ -35,6 +36,7 @@ public class World {
 	public Matrix4f projectionMatrix, viewMatrix;
 	public Matrix4f modelMatrix = new Matrix4f();
 	public int projLoc, viewLoc, modelLoc;
+	public int lightLoc;
 	
 	public int shaderProgram = ShaderLoader.loadShaders("res/shader.vert", "res/shader.frag");
 	
@@ -71,16 +73,15 @@ public class World {
 		projLoc = GL20.glGetUniformLocation(shaderProgram, "projectionMatrix");
 		viewLoc = GL20.glGetUniformLocation(shaderProgram, "viewMatrix");
 		modelLoc = GL20.glGetUniformLocation(shaderProgram, "modelMatrix");
+		lightLoc = GL20.glGetUniformLocation(shaderProgram, "lightPos");
 		
 		GL20.glUseProgram(shaderProgram);
 		
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		modelMatrix.setIdentity();
 		
 		if(playerId != -1) {
 			Entity player = entities.get(playerId);
-			input.update(player);
-			//mainCamera.setPosition(transforms.get(player).position);
+			input.update(mainCamera);
 		}
 		
 		

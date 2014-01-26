@@ -20,8 +20,10 @@ public class RenderSystem extends System {
 	Vector3f axisY = new Vector3f(0, 1, 0);
 	Vector3f axisZ = new Vector3f(0, 0, 1);
 	
+	Vector3f light = new Vector3f(0, 10, 0);
+	
 	@Override
-	public void update(Entity e) {		
+	public void update(Entity e) {
 		Transform t = world.transforms.get(e.id);
 		Mesh m = world.meshes.get(e.id);
 		
@@ -32,6 +34,10 @@ public class RenderSystem extends System {
 		Matrix4f projectionMatrix = world.projectionMatrix;
 		Matrix4f viewMatrix = world.viewMatrix;
 		Matrix4f modelMatrix = world.modelMatrix;
+		
+		modelMatrix.setIdentity();
+		
+		//FIXME rotation should be in radians
 		modelMatrix.translate(new Vector3f(t.position.x, t.position.y, t.position.z));
 		modelMatrix.rotate(t.rotation.x, axisX);
 		modelMatrix.rotate(t.rotation.y, axisY);
@@ -39,17 +45,25 @@ public class RenderSystem extends System {
 		
 		FloatBuffer projBuffer = BufferUtils.createFloatBuffer(16);
 		projectionMatrix.store(projBuffer);
+		projBuffer.flip();
+		
 		FloatBuffer viewBuffer = BufferUtils.createFloatBuffer(16);
 		viewMatrix.store(viewBuffer);
+		viewBuffer.flip();
+		
 		FloatBuffer modelBuffer = BufferUtils.createFloatBuffer(16);
-		projectionMatrix.store(modelBuffer);
+		modelMatrix.store(modelBuffer);
+		modelBuffer.flip();
+		
+		FloatBuffer lightBuffer = BufferUtils.createFloatBuffer(4);
+		light.store(lightBuffer);
+		lightBuffer.put(1.0f);
+		lightBuffer.flip();
+		
 		GL20.glUniformMatrix4(world.projLoc, false, projBuffer);
-		GL20.glUniformMatrix4(world.projLoc, false, viewBuffer);
-		GL20.glUniformMatrix4(world.projLoc, false, modelBuffer);
-		
-		//Log.debug("View matrix: " + viewMatrix.toString());
-		//Log.debug("Buffer: " + projBuffer.get(11));
-		
+		GL20.glUniformMatrix4(world.viewLoc, false, viewBuffer);
+		GL20.glUniformMatrix4(world.modelLoc, false, modelBuffer);
+		GL20.glUniform4(world.lightLoc, lightBuffer);
 		GL30.glBindVertexArray(m.mesh);
 		GL20.glEnableVertexAttribArray(0);
 		

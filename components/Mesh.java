@@ -21,6 +21,10 @@ public class Mesh extends Component {
 	public int mesh;
 	public int vertexCount;
 	
+	public Mesh(int id) {
+		super(id);
+	}
+	
 	public Mesh(int id, String filepath) {
 		super(id);
 		mesh = loadModel(filepath);
@@ -39,7 +43,9 @@ public class Mesh extends Component {
 		}
 		
 		vertexCount = model.faces.size() * 3;
-		FloatBuffer vertices = BufferUtils.createFloatBuffer(vertexCount * 3);		
+		
+		FloatBuffer vertices = BufferUtils.createFloatBuffer(vertexCount * 3);
+		FloatBuffer normals = BufferUtils.createFloatBuffer(vertexCount * 3);
 		
 		for(Face face: model.faces) {
 			Vector3f v1 = model.vertices.get(face.vertices[0] - 1);
@@ -56,18 +62,25 @@ public class Mesh extends Component {
 			vertices.put(v3.x);
 			vertices.put(v3.y);
 			vertices.put(v3.z);
-			/*
+			
 			Vector3f n1 = model.normals.get(face.normals[0] - 1);
-			glNormal3f(n1.x, n1.y, n1.z);
+			normals.put(n1.x);
+			normals.put(n1.y);
+			normals.put(n1.z);
 			
 			Vector3f n2 = model.normals.get(face.normals[1] - 1);
-			glNormal3f(n2.x, n2.y, n2.z);
+			normals.put(n2.x);
+			normals.put(n2.y);
+			normals.put(n2.z);
 			
 			Vector3f n3 = model.normals.get(face.normals[2] - 1);
-			glNormal3f(n3.x, n3.y, n3.z);*/
+			normals.put(n3.x);
+			normals.put(n3.y);
+			normals.put(n3.z);
 		}
 		
 		vertices.flip();
+		normals.flip();
 		
 		int vao = GL30.glGenVertexArrays();
 		GL30.glBindVertexArray(vao);
@@ -77,6 +90,14 @@ public class Mesh extends Component {
 		
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STATIC_DRAW);
 		GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 0, 0);
+		
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+		
+		int vbo2 = GL15.glGenBuffers();
+		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo2);
+		
+		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, normals, GL15.GL_STATIC_DRAW);
+		GL20.glVertexAttribPointer(1, 3, GL11.GL_FLOAT, false, 0, 0);
 		
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 		GL30.glBindVertexArray(0);

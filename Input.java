@@ -49,4 +49,27 @@ public class Input {
 		
 		Vector3f.add(t.position, v.velocity, t.position);
 	}
+	
+	public void update(Camera c) {
+		forward = Keyboard.isKeyDown(Keyboard.KEY_W);
+		backward = Keyboard.isKeyDown(Keyboard.KEY_S);
+		left = Keyboard.isKeyDown(Keyboard.KEY_A);
+		right = Keyboard.isKeyDown(Keyboard.KEY_D);
+		
+		Vector3f cameraDir = Rotation.eulerToAxis(world.mainCamera.getRotation());
+		Vector3f direction = (Vector3f) cameraDir.scale(ACCELERATION);
+		
+		if(forward)  {Vector3f.add(c.velocity, direction, c.velocity);}
+		if(backward) {Vector3f.sub(c.velocity, direction, c.velocity);}
+		if(left)     {c.velocity.x -= ACCELERATION;}
+		if(right)    {c.velocity.x += ACCELERATION;}
+		if(!forward && !backward) {c.velocity.scale(0);}
+		
+		if(c.velocity.length() > MAX_SPEED) {
+			c.velocity.normalise();
+			c.velocity.scale(MAX_SPEED);
+		}
+		
+		Vector3f.add(c.position, c.velocity, c.position);
+	}
 }

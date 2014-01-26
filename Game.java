@@ -41,9 +41,11 @@ public class Game {
 		world.addSystem(new RenderSystem());
 		
 		Entity player = EntityFactory.createPlayer(world, 0, 0, 5);
-		Entity cube = EntityFactory.createCube(world, 0, 0, -5);
+		Entity cube = EntityFactory.createCube(world, 0, 0, -10);
+		Entity plane = EntityFactory.createPlane(world, 0, 0, 0, 30, 30);
 		world.addEntity(player);
 		world.addEntity(cube);
+		world.addEntity(plane);
 		//Lock the cursor to the screen
 		Mouse.setGrabbed(true);
 		

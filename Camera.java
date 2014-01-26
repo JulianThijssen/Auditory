@@ -4,6 +4,8 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
+import com.auditory.util.Log;
+
 public class Camera {
 	public static final float   DEFAULT_FOV = 90;
 	public static final float   DEFAULT_ASPECTRATIO = 1;
@@ -30,6 +32,7 @@ public class Camera {
 	
 	//FIXME Taking (0,0,0) as temporary camera point
 	Vector3f position = new Vector3f(0, 0, 0);
+	Vector3f velocity = new Vector3f(0, 0, 0);
 	Vector3f rotation = new Vector3f(0, 0, 0);
 	
 	public Camera() {
@@ -72,10 +75,10 @@ public class Camera {
 			rotation.y += dx;
 		}
 
-		/*viewMatrix.rotate(rotation.x, axisX);
-		viewMatrix.rotate(rotation.y, axisY);
-		viewMatrix.rotate(rotation.z, axisZ);
-		viewMatrix.translate(new Vector3f(-position.x, -position.y, -position.z));*/
+		viewMatrix.rotate((float) Math.toRadians(rotation.x), axisX);
+		viewMatrix.rotate((float) Math.toRadians(rotation.y), axisY);
+		viewMatrix.rotate((float) Math.toRadians(rotation.z), axisZ);
+		viewMatrix.translate(new Vector3f(-position.x, -position.y, -position.z));
 	}
 	
 	public Matrix4f getViewMatrix() {
