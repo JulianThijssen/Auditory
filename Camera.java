@@ -9,7 +9,7 @@ import com.auditory.util.Log;
 public class Camera {
 	public static final float   DEFAULT_FOV = 90;
 	public static final float   DEFAULT_ASPECTRATIO = 1;
-	public static final float   DEFAULT_ZNEAR = 0.3f;
+	public static final float   DEFAULT_ZNEAR = 0.1f;
 	public static final float   DEFAULT_ZFAR = 100f;
 	public static final boolean DEFAULT_PERSPECTIVE = true;
 	public static final float   MIN_PITCH = -90;

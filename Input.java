@@ -9,7 +9,7 @@ import com.auditory.util.Rotation;
 
 public class Input {
 	public static final float MAX_SPEED = 0.3f;
-	public static final float ACCELERATION = 0.05f;
+	public static final float ACCELERATION = 0.005f;
 
 	private World world;
 	

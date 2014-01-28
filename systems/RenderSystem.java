@@ -66,11 +66,13 @@ public class RenderSystem extends System {
 		GL20.glUniform4(world.lightLoc, lightBuffer);
 		GL30.glBindVertexArray(m.mesh);
 		GL20.glEnableVertexAttribArray(0);
+		GL20.glEnableVertexAttribArray(1);
 		
 		//Draw the vertices
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, m.vertexCount);
 		
 		GL20.glDisableVertexAttribArray(0);
+		GL20.glDisableVertexAttribArray(1);
 		GL30.glBindVertexArray(0);
 	}
 }

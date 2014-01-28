@@ -81,10 +81,10 @@ public class World {
 		
 		if(playerId != -1) {
 			Entity player = entities.get(playerId);
-			input.update(mainCamera);
+			
 		}
 		
-		
+		input.update(mainCamera);
 		mainCamera.update();
 		
 		projectionMatrix = mainCamera.getPerspectiveMatrix();

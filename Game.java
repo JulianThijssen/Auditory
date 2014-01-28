@@ -5,6 +5,7 @@ import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.openal.AL;
 import org.lwjgl.LWJGLException;
@@ -42,10 +43,10 @@ public class Game {
 		
 		Entity player = EntityFactory.createPlayer(world, 0, 0, 5);
 		Entity cube = EntityFactory.createCube(world, 0, 0, -10);
-		Entity plane = EntityFactory.createPlane(world, 0, 0, 0, 30, 30);
+		//Entity plane = EntityFactory.createPlane(world, 0, 0, 0, 30, 30);
 		world.addEntity(player);
 		world.addEntity(cube);
-		world.addEntity(plane);
+		//world.addEntity(plane);
 		//Lock the cursor to the screen
 		Mouse.setGrabbed(true);
 		
@@ -60,6 +61,7 @@ public class Game {
 	            Mouse.setGrabbed(false);
 	        }
 			Display.sync(60);
+			GL11.glEnable(GL11.GL_DEPTH_TEST);
 			
 			//Update the world
 			world.update();

@@ -42,8 +42,10 @@ public class Mesh extends Component {
 			return -1;
 		}
 		
+		//There are 3 vertices in a face
 		vertexCount = model.faces.size() * 3;
 		
+		//Create buffers equal to 3*vertexCount, there are 3 floats in a vertex
 		FloatBuffer vertices = BufferUtils.createFloatBuffer(vertexCount * 3);
 		FloatBuffer normals = BufferUtils.createFloatBuffer(vertexCount * 3);
 		
